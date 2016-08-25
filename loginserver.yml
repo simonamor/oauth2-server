@@ -1,0 +1,6 @@
+name: LoginServer
+
+# Change this password on live!
+Model::DB:
+    connect_info:
+        password: oauth2_server_password
