@@ -1,7 +1,9 @@
 <p>If you have a login already, please enter your details below.</p>
 
+[% IF error_msg %]<p>[% error_msg %]</p>[% END %]
+
 <!-- Login form -->
-<form method="post" action="/login">
+<form method="post" action="[% c.req.uri %]">
   <table>
     <tr>
       <td>Username:</td>

@@ -47,43 +47,6 @@ sub default :Path {
     $c->response->status(404);
 }
 
-sub login :Path('/login') :Args(0) {
-    my ($self, $c) = @_;
-    $c->log->debug("passthrulogin @ line " . __LINE__);
-
-    # Get the email and password from form
-    my $username = $c->request->params->{ username };
-    my $password = $c->request->params->{ password };
-
-    # If the sage_id, username and password values were found in form
-    if ($username && $password) {
-        # Attempt to log the user in
-        if ($c->authenticate({ username => $username,
-                               password => $password  } )) {
-
-            # Prevents Session Fixation exploit.
-            # Changes session id without losing data.
-            $c->change_session_id;
-
-            # If successful, then let them use the application
-            $c->log->debug("Successful login");
-            # This somehow ends up back at /grant which generates the
-            # appropriate redirect
-            $c->detach();
-
-        } else {
-            $c->log->debug("Failed to login");
-            # Set an error message
-            $c->session( error_msg => "Bad username or password.");
-        }
-    }
-
-    # If either of above don't work out, send to the login page
-    $c->stash(
-        template => 'login.html',
-    );
-}
-
 =head2 /logout
 
 =cut
