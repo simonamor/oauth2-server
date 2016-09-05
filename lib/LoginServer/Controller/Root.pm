@@ -61,7 +61,13 @@ sub logout :Path('/logout') :Args(0) {
     $c->response->redirect($c->uri_for('/'));
 }
 
-sub end : ActionClass('RenderView') { }
+sub end : ActionClass('RenderView') {
+    my ($self,$c) = @_;
+    if ($c->res->status == 401) {
+        $c->res->body("<h1>Authorization required</h1>");
+        $c->detach();
+    }
+}
 
 =head1 AUTHOR
 
