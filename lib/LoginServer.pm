@@ -56,6 +56,8 @@ __PACKAGE__->config(
     enable_catalyst_header => 0, # Send X-Catalyst header
 
     using_frontend_proxy => 1,
+
+    default_view => 'HTML',
 );
 
 
@@ -93,6 +95,47 @@ __PACKAGE__->config(
         # time if it's got less than 10 minutes until it expires
         expiry_threshold => 600,
     },
+);
+
+__PACKAGE__->config(
+    'Store::DBIC_JWT' => {
+        private_key => '-----BEGIN RSA PRIVATE KEY-----
+MIIEowIBAAKCAQEAui6/qJ658qPgmnGZSOPHnbDd352o+w2d94BahhWS7TRRWsFn
+eo3AnA3Sh+hJPRw4zFc+DApFTB3C4NJrwZaBBYG+FGvOSD5eOQZ48dk2d1A2PUI0
+5yaK4AXTtijDtWbwql2KCSST2yDEFK88XsMQV2YmMUMypvhoYoq+3skhrv7p6IiT
+JOCa/80ZZQfx+f9xI+NK3pX2vidfX8gi2XhDwEcyDnroS5GzfAtDjVz9JU6weRGu
+hiD74RZkQDbJ3T8XDhISZf4t2Z8HHK0yZ6tjs73vfAZGfauo5Wl5tjn5/1ijcaoc
+X+566PHNEayN04pDdC8xdfUvkfgZc4K2pP7StwIDAQABAoIBAAyX9uzf97H69clc
+n8K3bZw0B34FuxVoQWQpcXYaZXrYDBy4clhu2DV2FeSNiM6yZwEjcZX8590TMkhk
+01cf6BBIS2Q0OprWZSc0UeACElYVveV84fk0uTYYDs8GiN5vXR4Y/6pIqButZrYD
+eHDsfuF6jmDMq9NxgBYSToDhV/7vL4rVTGxiME6X3GYKWkzGr/rFK2ecVoyjRYwG
+oFVia4QBKE4EYBGlnJXyk5qZryM9EuQVpK56a+NW7G3CHL7ed8FHYHpuPKCB4UcA
+FxXS/vT8S46tPceuFLBvzzBInTExHr3qjIhOemvOE0DYd9UHYb9eEpL3o6VWp4ks
+zlR5xXkCgYEA85vdhkLP8MRBLU2u8gsyXrfbJ23r0kSyDwp1DJHlly+hlY4Nfuig
+vyNOoYN7gnAN7PuDpJgpdCM/BYTflEh+XdAMujv2TiOjzHWBJZajtdj6ndJD6YTQ
+SiOgkZpPhO3m9rPjr1AdlpFwDLM8277J6GD4DxiKoAByjCkSaPjitH0CgYEAw6cc
+oJCapP10/xih6qyBm8ec1MyOwqZIFf1ryGA+8bk0lEqQ+tqsOFehV/6aZ+LrhOG3
+zfq5Mr/QzNG3RifxI4O3SDyVpMOjdqksC40OGhOhgTEiQeR6ywGCtLUTqZKq6FX7
+4BsExBoIl180AIho4R/QojfeBdbNg5lNvZKxzkMCgYAqiAHrGOsZDAqdED0FATNw
+GgVnIufTNC8qNRcudKJy/NvnMn/kslSuSknGJSCBK3Mi9t6K9A34utab7hDi4K0/
+T72JHkLobYyBe9pqZ5x5eUJ4H2e/83IyH3o/MYPEn4x9cfbEeuZPjWDUts5fRzYV
+Hijw6cX6HVniYqFWNm3OOQKBgD3HiNySjKJIficGyinl6s8bysPPC80e4GhBK0WM
+TpPZXWbt3LW5UuQ/l2zHsk3Xc3L0KyvZXZ1OwEnMdsiqWBRUxQ0ERGRQek8/v+6t
+zaQiSr8WmrCfyr5LbdBN1TWYYGsYq33qSij553iU0UDR0fw0JZbzeSHy39YMFGYl
+6gstAoGBAJfnAt5YFOgumM2i1qptvzh0mVpVm2wl3r6KSqZpr7D4damL418CtFlh
+j2r9FiOtVYe72bajz+85Z/KfJPCZI6lpdjwDWUecc3AqUf74ULKXlAVYuWzr/m1B
+8C+enr4DuMHqstWbjfKKCAUhdbb2bLTglOraQedoTQ/HxQ9kIITS
+-----END RSA PRIVATE KEY-----',
+        public_key => '-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAui6/qJ658qPgmnGZSOPH
+nbDd352o+w2d94BahhWS7TRRWsFneo3AnA3Sh+hJPRw4zFc+DApFTB3C4NJrwZaB
+BYG+FGvOSD5eOQZ48dk2d1A2PUI05yaK4AXTtijDtWbwql2KCSST2yDEFK88XsMQ
+V2YmMUMypvhoYoq+3skhrv7p6IiTJOCa/80ZZQfx+f9xI+NK3pX2vidfX8gi2XhD
+wEcyDnroS5GzfAtDjVz9JU6weRGuhiD74RZkQDbJ3T8XDhISZf4t2Z8HHK0yZ6tj
+s73vfAZGfauo5Wl5tjn5/1ijcaocX+566PHNEayN04pDdC8xdfUvkfgZc4K2pP7S
+twIDAQAB
+-----END PUBLIC KEY-----',
+    }
 );
 
 # Start the application

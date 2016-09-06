@@ -6,7 +6,7 @@ with 'CatalystX::OAuth2::Controller::Role::Provider';
 
 __PACKAGE__->config(
   store => {
-    class => 'DBIC',
+    class => 'DBIC_JWT',
     client_model => 'DB::Client'
   }
 );
@@ -43,6 +43,16 @@ sub grant : Chained('base') Args(0) Does('OAuth2::GrantAuth') {
     # since we're using it for centralised login rather than granting privs
     # to a third-party.
     $oauth2->approved(1);
+
+    # We needed to record which user authenticated against
+    # the code so that when a protected resource is requested
+    # with a token, we can link the token back to a particular
+    # authenticated user.
+
+    # The user id is also included within the JWT payload.
+
+    my $code = $oauth2->store->find_client_code($oauth2->code);
+    $code->update({ user_id => $c->user->id });
 }
 
 sub token : Chained('base') Args(0) Does('OAuth2::AuthToken::ViaAuthGrant') {}

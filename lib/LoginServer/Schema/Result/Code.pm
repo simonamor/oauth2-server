@@ -9,7 +9,8 @@ __PACKAGE__->add_columns(
   client_id => { data_type => 'int', is_nullable => 0 },
   id => { data_type => 'int', is_auto_increment => 1, is_nullable => 0 },
   is_active => { data_type => 'int', is_nullable => 0, default_value => 0 },
-  owner_id => { data_type => 'int', is_nullable => 1 }
+  owner_id => { data_type => 'int', is_nullable => 1 },
+    user_id => { data_type => 'int', is_nullable => 1 }
 );
 __PACKAGE__->set_primary_key(qw(id));
 __PACKAGE__->belongs_to(
@@ -23,6 +24,10 @@ __PACKAGE__->has_many(
 __PACKAGE__->belongs_to(
   owner => 'LoginServer::Schema::Result::Owner',
   { 'foreign.id' => 'self.owner_id' }
+);
+__PACKAGE__->belongs_to(
+    user => 'LoginServer::Schema::Result::User',
+        { 'foreign.id' => 'self.user_id' }
 );
 
 sub as_string { shift->id }

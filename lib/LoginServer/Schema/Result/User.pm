@@ -14,18 +14,20 @@ __PACKAGE__->load_components("PassphraseColumn");
 __PACKAGE__->table("users");
 
 __PACKAGE__->add_columns(
-  "id",             {
-    data_type => "integer",
-    extra => { unsigned => 1 },
-    is_auto_increment => 1,
-    is_nullable => 0,
-  },
-  "password",       { data_type => "text", is_nullable => 1 },
-  "email_address",  { data_type => "text", is_nullable => 1 },
-  "first_name",     { data_type => "text", is_nullable => 1 },
-  "last_name",      { data_type => "text", is_nullable => 1 },
-  "active",         { data_type => "integer", is_nullable => 1 },
-  "username",       { data_type => "char", is_nullable => 0, size => 32 },
+    "id",                   {
+        data_type => "integer",
+        extra => { unsigned => 1 },
+        is_auto_increment => 1,
+        is_nullable => 0,
+    },
+    "password",             { data_type => "text", is_nullable => 1 },
+    "email_address",        { data_type => "text", is_nullable => 1 },
+    "first_name",           { data_type => "text", is_nullable => 1 },
+    "last_name",            { data_type => "text", is_nullable => 1 },
+    "active",               { data_type => "integer", is_nullable => 1 },
+    "username",             { data_type => "char", is_nullable => 0, size => 32 },
+    "last_password_change", { date_type => "datetime", is_nullable => 1 },
+    "last_login_time",      { date_type => "datetime", is_nullable => 1 },
 );
 
 __PACKAGE__->set_primary_key("id");
@@ -45,4 +47,5 @@ __PACKAGE__->add_columns(
 );
 
 __PACKAGE__->meta->make_immutable;
+
 1;
