@@ -27,28 +27,32 @@ sub profile :Chained('api_base') :PathPart('profile') :Args(0) {
 
     my $time = scalar(localtime(time()));
     $c->response->header("Content-Type", "application/json");
-    $c->response->body(sprintf '{"username":"someone","timestamp":"%s"}', $time);
+    $c->stash( json => { user_id => "6", timestamp => $time } );
+    $c->detach('View::JSON');
 }
 
 sub access :Chained('api_base') :PathPart('access') :Args(0) {
     my ($self, $c) = @_;
 
     $c->response->header("Content-Type", "application/json");
-    $c->response->body('{"content":"list of sites token user is allowed to access"}');
+    $c->stash( json => { content => "list of sites token user is allowed to access" } );
+    $c->detach('View::JSON');
 }
 
 sub refresh :Chained('api_base') :PathPart('refresh') :Args(0) {
     my ($self, $c) = @_;
 
     $c->response->header("Content-Type", "application/json");
-    $c->response->body('{"content":"refreshed jwt with same token id but different expiry"}');
+    $c->stash( json => { content => "refreshed jwt with same token id but different expiry" } );
+    $c->detach('View::JSON');
 }
 
 sub revoke :Chained('api_base') :PathPart('revoke') :Args(0) {
     my ($self, $c) = @_;
 
     $c->response->header("Content-Type", "application/json");
-    $c->response->body('{"content":"revoke jwt by deleting token from db"}');
+    $c->stash( json => { result => "ok", content => "revoke jwt by deleting token from db" } );
+    $c->detach('View::JSON');
 }
 
 # __PACKAGE__->meta->make_immutable;
