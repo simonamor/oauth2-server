@@ -56,12 +56,8 @@ sub as_string {
     my $self = shift;
     my $user = $self->code->user;
 
-    my $lpt = 0;
-    my $llt = 0;
-    $lpt = parsedate($user->last_password_change)
-        if ($user->last_password_change);
-    $llt = parsedate($user->last_login_time)
-        if ($user->last_login_time);
+    my $lpt = $user->last_password_change;
+    my $llt = $user->last_login_time;
 
     # It doesn't have to be "secure" as long as it's obfuscated a bit
     # and doesn't give an easy indication as to what number a user is.
