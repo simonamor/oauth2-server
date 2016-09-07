@@ -26,8 +26,8 @@ __PACKAGE__->add_columns(
     "last_name",            { data_type => "text", is_nullable => 1 },
     "active",               { data_type => "integer", is_nullable => 1 },
     "username",             { data_type => "char", is_nullable => 0, size => 32 },
-    "last_password_change", { date_type => "datetime", is_nullable => 1 },
-    "last_login_time",      { date_type => "datetime", is_nullable => 1 },
+    "last_password_change", { date_type => "integer", is_nullable => 0, default_value => 0 },
+    "last_login_time",      { date_type => "integer", is_nullable => 0, default_value => 0 },
 );
 
 __PACKAGE__->set_primary_key("id");
