@@ -20,14 +20,17 @@ sub grant : Chained('base') Args(0) Does('OAuth2::GrantAuth') {
 
     my $oauth2 = $c->req->oauth2; #ref() CatalystX::OAuth2::Request::GrantAuth
 
-    $c->log->debug("Here at line " . __LINE__);
+    $c->log->debug("Here in file " . __FILE__ . " at line " . __LINE__);
 
     if ($c->req->params->{ username } && $c->req->params->{ password }) {
         if ($c->authenticate({
             username => $c->req->params->{ username },
-            password => $c->req->params->{ password } })) {
+            password => $c->req->params->{ password },
+            active   => 1, })) {
 
             $c->log->debug("Successful login");
+
+            $c->user->update({ last_login_time => time() });
         } else {
             $c->detach('login');
         }
@@ -37,7 +40,7 @@ sub grant : Chained('base') Args(0) Does('OAuth2::GrantAuth') {
     $c->user_exists and $oauth2->user_is_valid(1)
         or $c->detach('login');
 
-    $c->log->debug("Here at line " . __LINE__);
+    $c->log->debug("Here in file " . __FILE__ . " at line " . __LINE__);
 
     # If the user is logged in and valid, approve the granting of permissions
     # since we're using it for centralised login rather than granting privs
@@ -72,6 +75,8 @@ sub login : Chained('base') Args(0) {
         # Set an error message to be included on the login page
         $c->stash( error_msg => "Bad username or password." );
     }
+
+    $c->stash( cancel_uri => $c->req->params->{ redirect_uri } );
 
     # If the above params aren't present, display the login page
     $c->stash( template => 'login.html' );
