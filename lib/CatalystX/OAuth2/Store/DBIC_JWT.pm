@@ -33,6 +33,10 @@ sub verify_client_token {
         if (! $user) {
             return 0;   # User doesn't exist in db (deleted?)
         }
+        if ((exists $jwt->{ lpt }) &&
+            ($jwt->{ lpt } < $user->last_password_change)) {
+            return 0;   # User has changed password since token issued
+        }
         return $token;
     }
     return 0;
