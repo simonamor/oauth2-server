@@ -40,11 +40,9 @@ sub api_base :Chained('/') :PathPart('api') :CaptureArgs(0) :Does('OAuth2::Prote
 sub profile :Chained('api_base') :PathPart('profile') :Args(0) {
     my ($self, $c) = @_;
 
-    my $time = scalar(localtime(time()));
     $c->response->header("Content-Type", "application/json");
     $c->stash( json => {
         user_id => $c->user->id,
-        timestamp => $time,
         map {
             $_ => $c->user->$_
         } qw/first_name last_name email_address username
