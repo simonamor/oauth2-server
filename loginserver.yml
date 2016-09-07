@@ -5,7 +5,6 @@ Model::DB:
     connect_info:
         password: oauth2_server_password
 
-
 # And generate a new private/public key
 Store::DBIC_JWT:
     private_key: |-
@@ -46,4 +45,5 @@ Store::DBIC_JWT:
         s73vfAZGfauo5Wl5tjn5/1ijcaocX+566PHNEayN04pDdC8xdfUvkfgZc4K2pP7S
         twIDAQAB
         -----END PUBLIC KEY-----
+    hashid_salt: A really not secure token for the jwt, but its good enough!
 

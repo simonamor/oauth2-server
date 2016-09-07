@@ -1,6 +1,5 @@
 package CatalystX::OAuth2::Store::DBIC_JWT;
 use Moose;
-use Crypt::JWT;
 
 use strict;
 use warnings;
@@ -12,30 +11,28 @@ sub verify_client_token {
     my $rs = $self->_client_model;
     return 0 unless defined $access_token;
 
-    # decode the JWT to get the token id
-    my $public = Crypt::OpenSSL::RSA->new_public_key(
-        LoginServer->config->{ 'Store::DBIC_JWT' }{ public_key }
-    );
+    my $token_rs = $rs->related_resultset( $self->code_relation )
+        ->related_resultset( $self->token_relation );
 
-    my $jwt = eval {
-        Crypt::JWT::decode_jwt(
-            token   => $access_token,
-            key     => $public,
-        );
-    };
+    my $jwt = $token_rs->jwt_payload($access_token);
 
-    my $token_id = 0;
-    if ($jwt && (ref($jwt) eq 'HASH')) {
-        $token_id = $jwt->{ tid };
-    }
-    # Failed to extract the token id or the JWT wasn't valid?
-    if (! $token_id) {
+    # Failed to extract payload, JWT wasn't valid, or token id not present?
+    unless ($jwt && (ref($jwt) eq 'HASH') && ($jwt->{ tid })) {
         return 0;
     }
 
-    my $token_rs = $rs->related_resultset( $self->code_relation )
-        ->related_resultset( $self->token_relation );
-    if(my $token = $token_rs->find($token_id)) {
+    my $hashids = $token_rs->jwt_hashid();
+    my $user_id = $hashids->decode($jwt->{ user_id });
+
+    if(my $token = $token_rs->find($jwt->{ tid })) {
+        # Validation! Should be the same user id
+        if ($token->code->user_id != $user_id) {
+            return 0;   # User id for code doesn't match user id in JWT
+        }
+        my $user = $token->code->user;
+        if (! $user) {
+            return 0;   # User doesn't exist in db (deleted?)
+        }
         return $token;
     }
     return 0;

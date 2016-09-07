@@ -4,7 +4,6 @@ use parent 'DBIx::Class';
 use Crypt::JWT;
 use Crypt::OpenSSL::RSA;
 use Time::ParseDate;
-use Hashids;
 
 use strict;
 use warnings;
@@ -66,12 +65,8 @@ sub as_string {
 
     # It doesn't have to be "secure" as long as it's obfuscated a bit
     # and doesn't give an easy indication as to what number a user is.
-    my $hashids = Hashids->new(
-        # Update this for a real deployment!
-        salt => 'A really not secure token for the jwt, but its good enough!',
-        minHashLength => 15,
-        alphabet => join('', reverse('A'..'Z'), reverse('a'..'z'), reverse(0..9)),
-    );
+
+    my $hashids = $self->result_source->resultset->jwt_hashid();
     my $userid = $hashids->encode($user->id);
 
     my $payload = {
